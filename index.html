@@ -8,143 +8,150 @@
     <style>
         body {
             font-family: sans-serif;
-            margin: 40px auto;
-            max-width: 400px;
-            padding: 10px;
-            background-color: #f3f3f3;
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f5f5f5;
             border-radius: 10px;
         }
         h2 {
             text-align: center;
         }
-        .form-group {
-            margin-bottom: 15px;
+        .group {
+            margin-bottom: 20px;
         }
-        .label-title {
+        .label {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: block;
         }
-        .btn-group button {
-            padding: 10px;
+        .btn-option {
+            display: inline-block;
+            padding: 10px 15px;
             margin: 5px 5px 0 0;
-            border: 1px solid #ccc;
-            background-color: #eee;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            background-color: #fff;
             cursor: pointer;
-            border-radius: 5px;
-            min-width: 80px;
         }
-        .btn-group button.selected {
-            background-color: #2196F3;
-            color: #fff;
-            border: 2px solid #0b65c1;
-        }
-        input[type="number"], input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            margin-top: 5px;
-        }
-        button#submitBtn {
+        .btn-option.active {
             background-color: #4CAF50;
             color: white;
-            padding: 10px;
+            border-color: #4CAF50;
+        }
+        input[type="number"],
+        input[type="text"] {
             width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
+            cursor: pointer;
+        }
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h2>記帳小幫手</h2>
-    <form id="accountForm">
-        <div class="form-group">
-            <label class="label-title">類別：</label>
-            <div class="btn-group" id="category-group">
-                <button type="button" data-value="支出">支出</button>
-                <button type="button" data-value="收入">收入</button>
+    <form id="accountForm" action="https://docs.google.com/forms/d/e/1FAIpQLSeibKXwVQx2cf784fdT0NghnSzGXTwn4GK-GwcuGQI70egpRA/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+        <div class="group">
+            <span class="label">類型</span>
+            <div id="categoryGroup">
+                <div class="btn-option" data-name="entry.612435133" data-value="支出">支出</div>
+                <div class="btn-option" data-name="entry.612435133" data-value="收入">收入</div>
             </div>
-            <input type="hidden" name="entry.1234567890" id="category">
         </div>
-        <div class="form-group">
-            <label class="label-title">項目：</label>
-            <div class="btn-group" id="type-group">
-                <button type="button" data-value="餐飲">餐飲</button>
-                <button type="button" data-value="交通">交通</button>
-                <button type="button" data-value="娛樂">娛樂</button>
-                <button type="button" data-value="薪資">薪資</button>
-                <button type="button" data-value="投資">投資</button>
+        <div class="group">
+            <span class="label">類別</span>
+            <div id="typeGroup">
+                <div class="btn-option" data-name="entry.244319869" data-value="餐廳">餐廳</div>
+                <div class="btn-option" data-name="entry.244319869" data-value="便利商店">便利商店</div>
+                <div class="btn-option" data-name="entry.244319869" data-value="路邊攤">路邊攤</div>
             </div>
-            <input type="hidden" name="entry.2233445566" id="type">
         </div>
-        <div class="form-group">
-            <label class="label-title">金額：</label>
-            <input type="number" name="entry.3344556677" required>
+        <div class="group">
+            <label class="label" for="amount">金額</label>
+            <input type="number" name="entry.550702918" id="amount" required>
         </div>
-        <div class="form-group">
-            <label class="label-title">註記：</label>
-            <input type="text" name="entry.4455667788">
+        <div class="group">
+            <label class="label" for="note">註記</label>
+            <input type="text" name="entry.589176389" id="note">
         </div>
-        <div class="form-group">
-            <label class="label-title">支付方式：</label>
-            <div class="btn-group" id="payment-group">
-                <button type="button" data-value="現金">現金</button>
-                <button type="button" data-value="信用卡">信用卡</button>
-                <button type="button" data-value="LINE Pay">LINE Pay</button>
-                <button type="button" data-value="悠遊卡">悠遊卡</button>
+        <div class="group">
+            <span class="label">支付方式</span>
+            <div id="paymentGroup">
+                <div class="btn-option" data-name="entry.265965867" data-value="現金">現金</div>
+                <div class="btn-option" data-name="entry.265965867" data-value="信用卡">信用卡</div>
+                <div class="btn-option" data-name="entry.265965867" data-value="LINE Pay">LINE Pay</div>
+                <div class="btn-option" data-name="entry.265965867" data-value="悠遊卡">悠遊卡</div>
             </div>
-            <input type="hidden" name="entry.5566778899" id="payment">
         </div>
-        <div class="form-group">
-            <label class="label-title">地點：</label>
-            <div class="btn-group" id="location-group">
-                <button type="button" data-value="餐廳">餐廳</button>
-                <button type="button" data-value="便利商店">便利商店</button>
-                <button type="button" data-value="路邊攤">路邊攤</button>
+        <div class="group">
+            <span class="label">地點</span>
+            <div id="locationGroup">
+                <div class="btn-option" data-name="entry.1655818983" data-value="餐廳">餐廳</div>
+                <div class="btn-option" data-name="entry.1655818983" data-value="便利商店">便利商店</div>
+                <div class="btn-option" data-name="entry.1655818983" data-value="路邊攤">路邊攤</div>
             </div>
-            <input type="hidden" name="entry.6677889900" id="location">
         </div>
-        <button type="submit" id="submitBtn">送出</button>
+        <button type="submit">送出</button>
+        <p id="message"></p>
     </form>
-    <p id="responseMsg" style="text-align:center; color:green; font-weight:bold;"></p>
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
     <script>
-        const url = "https://docs.google.com/forms/d/e/1FAIpQLSeibKXwVQx2cf784fdT0NghnSzGXTwn4GK-GwcuGQI70egpRA/formResponse";
-
         const form = document.getElementById("accountForm");
-        const msg = document.getElementById("responseMsg");
+        const message = document.getElementById("message");
+        let submitted = false;
 
-        function handleButtonGroup(groupId, inputId) {
+        function setupButtons(groupId) {
             const group = document.getElementById(groupId);
-            const hidden = document.getElementById(inputId);
-            group.querySelectorAll("button").forEach(btn => {
+            group.querySelectorAll(".btn-option").forEach(btn => {
                 btn.addEventListener("click", () => {
-                    group.querySelectorAll("button").forEach(b => b.classList.remove("selected"));
-                    btn.classList.add("selected");
-                    hidden.value = btn.dataset.value;
+                    group.querySelectorAll(".btn-option").forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    const hiddenInput = document.querySelector(`input[name='${btn.dataset.name}']`) ||
+                        (() => {
+                            const input = document.createElement("input");
+                            input.type = "hidden";
+                            input.name = btn.dataset.name;
+                            form.appendChild(input);
+                            return input;
+                        })();
+                    hiddenInput.value = btn.dataset.value;
                 });
             });
         }
 
-        handleButtonGroup("category-group", "category");
-        handleButtonGroup("type-group", "type");
-        handleButtonGroup("payment-group", "payment");
-        handleButtonGroup("location-group", "location");
+        setupButtons("categoryGroup");
+        setupButtons("typeGroup");
+        setupButtons("paymentGroup");
+        setupButtons("locationGroup");
 
-        form.addEventListener("submit", function(e) {
-            e.preventDefault();
-            const formData = new FormData(form);
-            fetch(url, {
-                method: "POST",
-                body: formData,
-                mode: "no-cors"
-            }).then(() => {
-                msg.textContent = "✅ 記帳完成";
-                form.reset();
-                document.querySelectorAll(".btn-group button").forEach(b => b.classList.remove("selected"));
-            }).catch(() => {
-                msg.textContent = "❌ 發送失敗，請稍後再試";
-            });
+        form.addEventListener("submit", () => {
+            message.textContent = "送出中...";
+            setTimeout(() => {
+                if (submitted) {
+                    message.textContent = "✅ 記帳成功！";
+                    form.reset();
+                    document.querySelectorAll(".btn-option").forEach(b => b.classList.remove("active"));
+                } else {
+                    message.textContent = "❌ 發送失敗，請稍後再試";
+                }
+                submitted = false;
+            }, 2000);
         });
     </script>
 </body>

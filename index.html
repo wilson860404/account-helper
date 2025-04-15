@@ -2,121 +2,119 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>記帳小幫手</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 40px auto;
-            max-width: 400px;
-            padding: 10px;
-            background-color: #f3f3f3;
-            border-radius: 10px;
-        }
-        h2 {
-            text-align: center;
-        }
-        label {
-            font-weight: bold;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button:disabled {
-            background-color: #aaa;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>記帳小幫手</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 40px auto;
+      max-width: 400px;
+      padding: 10px;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button:disabled {
+      background-color: #aaa;
+    }
+  </style>
 </head>
 <body>
-    <h2>記帳小幫手</h2>
-    <form id="accountForm">
-        <div class="form-group">
-            <label>類別：</label><br>
-            <input type="radio" name="category" value="支出" required> 支出
-            <input type="radio" name="category" value="收入"> 收入
-        </div>
-        <div class="form-group">
-            <label for="type">項目：</label>
-            <select name="type" id="type" required>
-                <option value="">請選擇</option>
-                <option value="餐飲">餐飲</option>
-                <option value="交通">交通</option>
-                <option value="娛樂">娛樂</option>
-                <option value="薪資">薪資</option>
-                <option value="投資">投資</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="amount">金額：</label>
-            <input type="number" id="amount" name="amount" required>
-        </div>
-        <div class="form-group">
-            <label for="note">註記：</label>
-            <input type="text" id="note" name="note">
-        </div>
-        <div class="form-group">
-            <label for="payment">支付方式：</label>
-            <select id="payment" name="payment">
-                <option value="">未指定</option>
-                <option value="現金">現金</option>
-                <option value="信用卡">信用卡</option>
-                <option value="LINE Pay">LINE Pay</option>
-                <option value="悠遊卡">悠遊卡</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="location">地點：</label>
-            <select id="location" name="location">
-                <option value="">未指定</option>
-                <option value="餐廳">餐廳</option>
-                <option value="便利商店">便利商店</option>
-                <option value="路邊攤">路邊攤</option>
-            </select>
-        </div>
-        <button type="submit" id="submitBtn">送出</button>
-    </form>
-    <p id="responseMsg" style="text-align:center; color:green; font-weight:bold;"></p>
-    <script>
-        const form = document.getElementById("accountForm");
-        const msg = document.getElementById("responseMsg");
-        const submitBtn = document.getElementById("submitBtn");
-        const url = "https://script.google.com/macros/s/AKfycbxliXcj0nQzOj65S19qMGZY-L-_2aoc9uxLYwmWDLYP7w5gY5ccza1ILMDDcwtFf8JDlg/exec";
+  <h2>記帳小幫手</h2>
+  <form id="accountForm">
+    <div class="form-group">
+      <label>類別：</label><br>
+      <input type="radio" name="entry.964099903" value="支出" required> 支出
+      <input type="radio" name="entry.964099903" value="收入"> 收入
+    </div>
+    <div class="form-group">
+      <label for="type">項目：</label>
+      <select name="entry.1229287810" id="type" required>
+        <option value="">請選擇</option>
+        <option value="餐飲">餐飲</option>
+        <option value="交通">交通</option>
+        <option value="娛樂">娛樂</option>
+        <option value="薪資">薪資</option>
+        <option value="投資">投資</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="amount">金額：</label>
+      <input type="number" id="amount" name="entry.1946176074" required>
+    </div>
+    <div class="form-group">
+      <label for="note">註記：</label>
+      <input type="text" id="note" name="entry.678712512">
+    </div>
+    <div class="form-group">
+      <label for="payment">支付方式：</label>
+      <select id="payment" name="entry.1376323541">
+        <option value="">未指定</option>
+        <option value="現金">現金</option>
+        <option value="信用卡">信用卡</option>
+        <option value="LINE Pay">LINE Pay</option>
+        <option value="悠遊卡">悠遊卡</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="location">地點：</label>
+      <select id="location" name="entry.2148828761">
+        <option value="">未指定</option>
+        <option value="餐廳">餐廳</option>
+        <option value="便利商店">便利商店</option>
+        <option value="路邊攤">路邊攤</option>
+      </select>
+    </div>
+    <button type="submit" id="submitBtn">送出</button>
+  </form>
+  <p id="responseMsg" style="text-align:center; color:green; font-weight:bold;"></p>
+  <script>
+    const form = document.getElementById("accountForm");
+    const msg = document.getElementById("responseMsg");
+    const submitBtn = document.getElementById("submitBtn");
 
-        form.addEventListener("submit", function(e) {
-            e.preventDefault();
-            submitBtn.disabled = true;
-            msg.textContent = "記帳中...";
+    const url = "https://docs.google.com/forms/d/e/1FAIpQLSchlIy4L8L7Xhej2PI_Kgpp5Y0jVaMR8VHe2L82y8SuUrQf3A/formResponse";
 
-            const formData = new FormData(form);
-            fetch(url, {
-                method: "POST",
-                body: formData
-            })
-            .then(res => res.text())
-            .then(text => {
-                msg.textContent = "✅ 記帳完成";
-                form.reset();
-            })
-            .catch(err => {
-                msg.textContent = "❌ 發送失敗，請稍後再試";
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    msg.textContent = "";
-                    submitBtn.disabled = false;
-                }, 3000);
-            });
-        });
-    </script>
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      msg.textContent = "記帳中...";
+
+      const formData = new FormData(form);
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      }).then(() => {
+        msg.textContent = "✅ 記帳完成";
+        form.reset();
+      }).catch(() => {
+        msg.textContent = "❌ 發送失敗，請稍後再試";
+      }).finally(() => {
+        setTimeout(() => {
+          msg.textContent = "";
+          submitBtn.disabled = false;
+        }, 3000);
+      });
+    });
+  </script>
 </body>
 </html>

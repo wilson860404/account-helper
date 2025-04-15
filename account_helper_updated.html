@@ -2,65 +2,78 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>帳戶記帳小幫手</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="icon.png" type="image/png">
-  <style>
-    body { font-family: sans-serif; text-align: center; padding: 2em; }
-    button { font-size: 1.2em; padding: 0.5em 1.5em; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記帳小幫手</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .section { margin-bottom: 20px; }
+        button { padding: 10px 20px; margin: 5px; font-size: 16px; }
+        #submitBtn { background-color: #4CAF50; color: white; border: none; }
+    </style>
 </head>
 <body>
-  <h1>帳戶記帳小幫手</h1>
-  <form id="form" method="POST" action="https://script.google.com/macros/s/AKfycbxliXcj0nQzOj65S19qMGZY-L-_2aoc9uxLYwmWDLYP7w5gY5ccza1ILMDDcwtFf8JDlg/exec">
-    <label for="type">類別：</label>
-    <select name="type" required>
-      <option value="支出">支出</option>
-      <option value="收入">收入</option>
-    </select><br><br>
-    <label for="category">項目：</label>
-    <select name="category" required>
-      <option value="食物">食物</option>
-      <option value="交通">交通</option>
-      <option value="娛樂">娛樂</option>
-      <option value="薪水">薪水</option>
-      <option value="其他">其他</option>
-    </select><br><br>
-    <label for="amount">金額：</label>
-    <input type="number" name="amount" required><br><br>
-    <button type="submit" id="submitBtn">送出</button>
-    <p id="status"></p>
-  </form>
-  <script>
-    const form = document.getElementById("form");
-    const btn = document.getElementById("submitBtn");
-    const statusText = document.getElementById("status");
+    <h2>記帳小幫手</h2>
+    <form id="accountForm" action="https://docs.google.com/forms/d/e/1FAIpQLScvuhNbnPSZ91wWfMTwNvVAdILQZYutnOWKznljNpsmlmR-xA/formResponse" method="POST" target="hidden_iframe" onsubmit="handleSubmit();">
+        <div class="section">
+            <label>類型：</label><br>
+            <button type="button" onclick="setType('收入')">收入</button>
+            <button type="button" onclick="setType('支出')">支出</button>
+        </div>
 
-    form.addEventListener("submit", function(e) {
-      e.preventDefault();
-      btn.disabled = true;
-      btn.innerText = "送出中...";
-      statusText.textContent = "";
+        <div class="section">
+            <label for="category">分類：</label><br>
+            <select name="entry.1234567890" id="category" required>
+                <option value="">請選擇</option>
+                <option value="餐飲">餐飲</option>
+                <option value="交通">交通</option>
+                <option value="購物">購物</option>
+                <option value="薪資">薪資</option>
+                <option value="其他">其他</option>
+            </select>
+        </div>
 
-      fetch(form.action, {
-        method: "POST",
-        body: new FormData(form)
-      }).then(response => {
-        btn.innerText = "送出成功 ✅";
-        statusText.textContent = "3 秒後自動返回...";
-        setTimeout(() => {
-          form.reset();
-          btn.disabled = false;
-          btn.innerText = "送出";
-          statusText.textContent = "";
-        }, 3000);
-      }).catch(error => {
-        btn.disabled = false;
-        btn.innerText = "送出";
-        statusText.textContent = "發生錯誤，請稍後再試。";
-      });
-    });
-  </script>
+        <div class="section">
+            <label for="amount">金額：</label><br>
+            <input type="number" name="entry.9876543210" id="amount" required>
+        </div>
+
+        <div class="section">
+            <label for="note">註記：</label><br>
+            <input type="text" name="entry.1112131415" id="note">
+        </div>
+
+        <div class="section">
+            <label for="method">支付方式（非必填）：</label><br>
+            <input type="text" name="entry.1617181920" id="method">
+        </div>
+
+        <div class="section">
+            <label for="location">地點（非必填）：</label><br>
+            <input type="text" name="entry.2122232425" id="location">
+        </div>
+
+        <input type="hidden" name="entry.3141592653" id="typeField">
+        <button id="submitBtn" type="submit">送出</button>
+    </form>
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+
+    <script>
+        function setType(value) {
+            document.getElementById('typeField').value = value;
+        }
+        function handleSubmit() {
+            const btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.innerText = "送出中...";
+            setTimeout(() => {
+                alert("已送出！");
+                document.getElementById("accountForm").reset();
+                btn.disabled = false;
+                btn.innerText = "送出";
+            }, 2000);
+        }
+    </script>
 </body>
 </html>

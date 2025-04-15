@@ -8,120 +8,113 @@
     <style>
         body {
             font-family: sans-serif;
-            padding: 20px;
-            background: #f4f4f4;
+            margin: 40px auto;
+            max-width: 400px;
+            padding: 10px;
+            background-color: #f3f3f3;
+            border-radius: 10px;
         }
-        .step {
-            display: none;
+        h2 {
+            text-align: center;
         }
-        .step.active {
-            display: block;
+        label {
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 15px;
         }
         button {
-            margin: 5px;
-            padding: 10px 15px;
-        }
-        input, select, textarea {
-            display: block;
-            margin: 10px 0;
-            padding: 8px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
             width: 100%;
-            max-width: 300px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:disabled {
+            background-color: #aaa;
         }
     </style>
 </head>
 <body>
-    <h1>記帳小幫手</h1>
+    <h2>記帳小幫手</h2>
     <form id="accountForm">
-        <div id="step1" class="step active">
-            <p>請選擇類型：</p>
-            <button type="button" onclick="selectType('支出')">支出</button>
-            <button type="button" onclick="selectType('收入')">收入</button>
+        <div class="form-group">
+            <label>類別：</label><br>
+            <input type="radio" name="category" value="支出" required> 支出
+            <input type="radio" name="category" value="收入"> 收入
         </div>
-
-        <div id="step2" class="step">
-            <p>請選擇類別：</p>
-            <select id="category" required></select>
-            <button type="button" onclick="goToStep(3)">下一步</button>
+        <div class="form-group">
+            <label for="type">項目：</label>
+            <select name="type" id="type" required>
+                <option value="">請選擇</option>
+                <option value="餐飲">餐飲</option>
+                <option value="交通">交通</option>
+                <option value="娛樂">娛樂</option>
+                <option value="薪資">薪資</option>
+                <option value="投資">投資</option>
+            </select>
         </div>
-
-        <div id="step3" class="step">
-            <label>金額：</label>
-            <input type="number" id="amount" required />
-            <button type="button" onclick="goToStep(4)">下一步</button>
+        <div class="form-group">
+            <label for="amount">金額：</label>
+            <input type="number" id="amount" name="amount" required>
         </div>
-
-        <div id="step4" class="step">
-            <label>註記：</label>
-            <textarea id="note" placeholder="可選填"></textarea>
-            <label>支付方式：</label>
-            <input type="text" id="payment" placeholder="例如 現金 / 信用卡" />
-            <label>地點：</label>
-            <input type="text" id="location" placeholder="例如 便利商店 / 餐廳" />
-            <button type="submit">送出</button>
+        <div class="form-group">
+            <label for="note">註記：</label>
+            <input type="text" id="note" name="note">
         </div>
+        <div class="form-group">
+            <label for="payment">支付方式：</label>
+            <select id="payment" name="payment">
+                <option value="">未指定</option>
+                <option value="現金">現金</option>
+                <option value="信用卡">信用卡</option>
+                <option value="LINE Pay">LINE Pay</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="location">地點：</label>
+            <select id="location" name="location">
+                <option value="">未指定</option>
+                <option value="餐廳">餐廳</option>
+                <option value="便利商店">便利商店</option>
+                <option value="路邊攤">路邊攤</option>
+            </select>
+        </div>
+        <button type="submit" id="submitBtn">送出</button>
     </form>
-
-    <p id="status"></p>
-
+    <p id="responseMsg" style="text-align:center; color:green; font-weight:bold;"></p>
     <script>
-        const form = document.getElementById('accountForm');
-        let selectedType = "";
-        const categoryMap = {
-            '支出': ['餐飲', '交通', '購物', '娛樂', '醫療', '其他'],
-            '收入': ['薪資', '獎金', '投資', '其他']
-        };
+        const form = document.getElementById("accountForm");
+        const msg = document.getElementById("responseMsg");
+        const submitBtn = document.getElementById("submitBtn");
+        const url = "https://script.google.com/macros/s/AKfycbxliXcj0nQzOj65S19qMGZY-L-_2aoc9uxLYwmWDLYP7w5gY5ccza1ILMDDcwtFf8JDlg/exec";
 
-        function selectType(type) {
-            selectedType = type;
-            const category = document.getElementById('category');
-            category.innerHTML = '';
-            categoryMap[type].forEach(item => {
-                const option = document.createElement('option');
-                option.value = item;
-                option.textContent = item;
-                category.appendChild(option);
-            });
-            goToStep(2);
-        }
-
-        function goToStep(step) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
-        }
-
-        form.addEventListener('submit', async function(e) {
+        form.addEventListener("submit", function(e) {
             e.preventDefault();
-            const data = {
-                type: selectedType,
-                category: document.getElementById('category').value,
-                amount: document.getElementById('amount').value,
-                note: document.getElementById('note').value,
-                payment: document.getElementById('payment').value,
-                location: document.getElementById('location').value,
-                timestamp: new Date().toLocaleString("zh-TW")
-            };
+            submitBtn.disabled = true;
+            msg.textContent = "記帳中...";
 
-            document.querySelector('button[type="submit"]').disabled = true;
-            document.getElementById('status').innerText = '送出中...';
-
-            try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbxliXcj0nQzOj65S19qMGZY-L-_2aoc9uxLYwmWDLYP7w5gY5ccza1ILMDDcwtFf8JDlg/exec', {
-                    method: 'POST',
-                    body: JSON.stringify(data)
-                });
-                if (response.ok) {
-                    document.getElementById('status').innerText = '✅ 記帳成功！';
-                    form.reset();
-                    goToStep(1);
-                } else {
-                    throw new Error("送出失敗");
-                }
-            } catch (error) {
-                document.getElementById('status').innerText = '❌ 發生錯誤，請稍後再試';
-            } finally {
-                document.querySelector('button[type="submit"]').disabled = false;
-            }
+            const formData = new FormData(form);
+            fetch(url, {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(text => {
+                msg.textContent = "✅ 記帳完成";
+                form.reset();
+            })
+            .catch(err => {
+                msg.textContent = "❌ 發送失敗，請稍後再試";
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    msg.textContent = "";
+                    submitBtn.disabled = false;
+                }, 3000);
+            });
         });
     </script>
 </body>

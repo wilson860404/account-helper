@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<link rel="manifest" href="manifest.json">
+
+<link rel="icon" type="image/png" href="icon.png">
+
+  <meta charset="UTF-8">
+  <title>記帳小幫手</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    h2 { margin-top: 30px; }
+    button, input, select {
+      font-size: 18px;
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <h1>📒 記帳小幫手</h1>
+
+  <div id="step1">
+    <h2>1️⃣ 請選擇收入或支出</h2>
+    <button onclick="setType('支出')">支出</button>
+    <button onclick="setType('收入')">收入</button>
+  </div>
+
+  <div id="step2" class="hidden">
+    <h2>2️⃣ 選擇類別</h2>
+    <select id="categorySelect">
+      <!-- 動態產生 -->
+    </select>
+    <button onclick="goToStep3()">下一步</button>
+  </div>
+
+  <div id="step3" class="hidden">
+    <h2>3️⃣ 請輸入金額</h2>
+    <input type="number" id="amount" placeholder="例如：250" />
+    <button onclick="goToStep4()">下一步</button>
+  </div>
+
+  <div id="step4" class="hidden">
+    <h2>4️⃣ 備註（選填）</h2>
+    <input type="text" id="note" placeholder="例如：晚餐、薪資說明..." />
+    <button onclick="submitForm()">✅ 送出記帳</button>
+  </div>
+
+  <div id="status"></div>
+
+  <script>
+    const categories = {
+      "支出": ["餐飲", "交通", "娛樂", "生活用品", "房租", "其他"],
+      "收入": ["薪資", "投資", "紅包", "其他"]
+    };
+
+    let selectedType = '';
+
+    function setType(type) {
+      selectedType = type;
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+
+      const select = document.getElementById("categorySelect");
+      select.innerHTML = '';
+      categories[type].forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item;
+        opt.text = item;
+        select.appendChild(opt);
+      });
+    }
+
+    function goToStep3() {
+      document.getElementById("step2").classList.add("hidden");
+      document.getElementById("step3").classList.remove("hidden");
+    }
+
+    function goToStep4() {
+      document.getElementById("step3").classList.add("hidden");
+      document.getElementById("step4").classList.remove("hidden");
+    }
+
+    function submitForm() {
+      const category = document.getElementById("categorySelect").value;
+      const amount = document.getElementById("amount").value;
+      const note = document.getElementById("note").value;
+
+      const formData = new URLSearchParams();
+      formData.append("type", selectedType);
+      formData.append("category", category);
+      formData.append("amount", amount);
+      formData.append("note", note);
+
+      fetch("https://script.google.com/macros/s/AKfycbxliXcj0nQzOj65S19qMGZY-L-_2aoc9uxLYwmWDLYP7w5gY5ccza1ILMDDcwtFf8JDlg/exec", {
+        method: "POST",
+        body: formData,
+      }).then(() => {
+        document.body.innerHTML = "<h2>✅ 記帳成功！</h2><p>記得定期查看報表哦 📊</p>";
+      }).catch(() => {
+        document.getElementById("status").innerText = "❌ 發生錯誤，請稍後再試";
+      });
+    }
+  </script>
+</body>
+</html>

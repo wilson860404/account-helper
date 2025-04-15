@@ -1,0 +1,15 @@
+{
+  "name": "記帳小幫手",
+  "short_name": "記帳",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "簡單易用的記帳輔助工具",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

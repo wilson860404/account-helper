@@ -2,156 +2,179 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>記帳小幫手</title>
     <style>
         body {
             font-family: sans-serif;
-            max-width: 500px;
-            margin: auto;
-            padding: 20px;
-            background-color: #f5f5f5;
+            margin: 40px auto;
+            max-width: 400px;
+            padding: 10px;
+            background-color: #f3f3f3;
             border-radius: 10px;
         }
         h2 {
             text-align: center;
         }
-        .group {
-            margin-bottom: 20px;
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
         }
-        .label {
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .btn-option {
-            display: inline-block;
-            padding: 10px 15px;
-            margin: 5px 5px 0 0;
-            border: 2px solid #ccc;
-            border-radius: 6px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-        .btn-option.active {
-            background-color: #4CAF50;
-            color: white;
-            border-color: #4CAF50;
-        }
-        input[type="number"],
-        input[type="text"] {
-            width: 100%;
+        .button-option {
+            flex: 1;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
+            background-color: #ddd;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-        }
-        #message {
             text-align: center;
-            margin-top: 15px;
+        }
+        .button-option.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        #responseMsg {
+            text-align: center;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
     <h2>記帳小幫手</h2>
-    <form id="accountForm" action="https://docs.google.com/forms/d/e/1FAIpQLSeibKXwVQx2cf784fdT0NghnSzGXTwn4GK-GwcuGQI70egpRA/formResponse" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
-        <div class="group">
-            <span class="label">類型</span>
-            <div id="categoryGroup">
-                <div class="btn-option" data-name="entry.612435133" data-value="支出">支出</div>
-                <div class="btn-option" data-name="entry.612435133" data-value="收入">收入</div>
+    <form id="accountForm">
+        <div>
+            <label>類型：</label>
+            <div class="button-group" id="typeGroup">
+                <div class="button-option" data-value="支出">支出</div>
+                <div class="button-option" data-value="收入">收入</div>
             </div>
         </div>
-        <div class="group">
-            <span class="label">類別</span>
-            <div id="typeGroup">
-                <div class="btn-option" data-name="entry.244319869" data-value="餐廳">餐廳</div>
-                <div class="btn-option" data-name="entry.244319869" data-value="便利商店">便利商店</div>
-                <div class="btn-option" data-name="entry.244319869" data-value="路邊攤">路邊攤</div>
+        <div>
+            <label>項目：</label>
+            <div class="button-group" id="itemGroup">
+                <!-- 項目按鈕會根據類型動態生成 -->
             </div>
         </div>
-        <div class="group">
-            <label class="label" for="amount">金額</label>
-            <input type="number" name="entry.550702918" id="amount" required>
+        <label>金額：</label>
+        <input type="number" name="entry.550702918" required />
+
+        <label>註記：</label>
+        <input type="text" name="entry.589176389"/>
+
+        <label>支付方式：</label>
+        <div class="button-group" id="payGroup">
+            <div class="button-option" data-value="現金">現金</div>
+            <div class="button-option" data-value="信用卡">信用卡</div>
+            <div class="button-option" data-value="LINE Pay">LINE Pay</div>
+            <div class="button-option" data-value="悠遊卡">悠遊卡</div>
         </div>
-        <div class="group">
-            <label class="label" for="note">註記</label>
-            <input type="text" name="entry.589176389" id="note">
+
+        <label>地點：</label>
+        <div class="button-group" id="placeGroup">
+            <div class="button-option" data-value="餐廳">餐廳</div>
+            <div class="button-option" data-value="便利商店">便利商店</div>
+            <div class="button-option" data-value="路邊攤">路邊攤</div>
         </div>
-        <div class="group">
-            <span class="label">支付方式</span>
-            <div id="paymentGroup">
-                <div class="btn-option" data-name="entry.265965867" data-value="現金">現金</div>
-                <div class="btn-option" data-name="entry.265965867" data-value="信用卡">信用卡</div>
-                <div class="btn-option" data-name="entry.265965867" data-value="LINE Pay">LINE Pay</div>
-                <div class="btn-option" data-name="entry.265965867" data-value="悠遊卡">悠遊卡</div>
-            </div>
-        </div>
-        <div class="group">
-            <span class="label">地點</span>
-            <div id="locationGroup">
-                <div class="btn-option" data-name="entry.1655818983" data-value="餐廳">餐廳</div>
-                <div class="btn-option" data-name="entry.1655818983" data-value="便利商店">便利商店</div>
-                <div class="btn-option" data-name="entry.1655818983" data-value="路邊攤">路邊攤</div>
-            </div>
-        </div>
+
+        <input type="hidden" name="entry.612435133" id="categoryInput">
+        <input type="hidden" name="entry.244319869" id="itemInput">
+        <input type="hidden" name="entry.265965867" id="payInput">
+        <input type="hidden" name="entry.1655818983" id="placeInput">
+
         <button type="submit">送出</button>
-        <p id="message"></p>
     </form>
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <p id="responseMsg"></p>
 
     <script>
-        const form = document.getElementById("accountForm");
-        const message = document.getElementById("message");
-        let submitted = false;
+        const typeGroup = document.getElementById("typeGroup");
+        const itemGroup = document.getElementById("itemGroup");
+        const payGroup = document.getElementById("payGroup");
+        const placeGroup = document.getElementById("placeGroup");
+        const categoryInput = document.getElementById("categoryInput");
+        const itemInput = document.getElementById("itemInput");
+        const payInput = document.getElementById("payInput");
+        const placeInput = document.getElementById("placeInput");
+        const responseMsg = document.getElementById("responseMsg");
 
-        function setupButtons(groupId) {
-            const group = document.getElementById(groupId);
-            group.querySelectorAll(".btn-option").forEach(btn => {
+        const expenseItems = ["餐飲", "交通", "娛樂"];
+        const incomeItems = ["薪資", "獎金"];
+
+        function setActive(group, value, inputElement) {
+            group.querySelectorAll(".button-option").forEach(btn => {
+                btn.classList.toggle("active", btn.dataset.value === value);
+            });
+            inputElement.value = value;
+        }
+
+        function createItemButtons(items) {
+            itemGroup.innerHTML = "";
+            items.forEach(item => {
+                const btn = document.createElement("div");
+                btn.className = "button-option";
+                btn.dataset.value = item;
+                btn.textContent = item;
                 btn.addEventListener("click", () => {
-                    group.querySelectorAll(".btn-option").forEach(b => b.classList.remove("active"));
-                    btn.classList.add("active");
-                    const hiddenInput = document.querySelector(`input[name='${btn.dataset.name}']`) ||
-                        (() => {
-                            const input = document.createElement("input");
-                            input.type = "hidden";
-                            input.name = btn.dataset.name;
-                            form.appendChild(input);
-                            return input;
-                        })();
-                    hiddenInput.value = btn.dataset.value;
+                    setActive(itemGroup, item, itemInput);
                 });
+                itemGroup.appendChild(btn);
             });
         }
 
-        setupButtons("categoryGroup");
-        setupButtons("typeGroup");
-        setupButtons("paymentGroup");
-        setupButtons("locationGroup");
+        typeGroup.querySelectorAll(".button-option").forEach(btn => {
+            btn.addEventListener("click", () => {
+                setActive(typeGroup, btn.dataset.value, categoryInput);
+                createItemButtons(btn.dataset.value === "支出" ? expenseItems : incomeItems);
+                itemInput.value = "";
+            });
+        });
 
-        form.addEventListener("submit", () => {
-            message.textContent = "送出中...";
-            setTimeout(() => {
-                if (submitted) {
-                    message.textContent = "✅ 記帳成功！";
-                    form.reset();
-                    document.querySelectorAll(".btn-option").forEach(b => b.classList.remove("active"));
-                } else {
-                    message.textContent = "❌ 發送失敗，請稍後再試";
-                }
-                submitted = false;
-            }, 2000);
+        payGroup.querySelectorAll(".button-option").forEach(btn => {
+            btn.addEventListener("click", () => {
+                setActive(payGroup, btn.dataset.value, payInput);
+            });
+        });
+
+        placeGroup.querySelectorAll(".button-option").forEach(btn => {
+            btn.addEventListener("click", () => {
+                setActive(placeGroup, btn.dataset.value, placeInput);
+            });
+        });
+
+        document.getElementById("accountForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            responseMsg.textContent = "⏳ 傳送中...";
+            const formData = new FormData(this);
+            fetch("https://docs.google.com/forms/d/e/1FAIpQLSeibKXwVQx2cf784fdT0NghnSzGXTwn4GK-GwcuGQI70egpRA/formResponse", {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
+                responseMsg.textContent = "✅ 記帳成功！";
+                this.reset();
+                document.querySelectorAll(".active").forEach(el => el.classList.remove("active"));
+            }).catch(() => {
+                responseMsg.textContent = "❌ 發送失敗，請稍後再試。";
+            });
         });
     </script>
 </body>
